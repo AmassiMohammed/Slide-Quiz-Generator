@@ -8,7 +8,7 @@
     Upload your lecture slides and automatically generate quiz questions to help you study faster.
 </p>
 
-<a href="/upload.php">
+<a href="upload.php">
     <button>Upload Slides</button>
 </a>
 
