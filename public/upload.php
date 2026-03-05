@@ -1,5 +1,21 @@
 <?php
     require_once '../templates/header.php';
+    $text = "";
+    if($_SERVER["REQUEST_METHOD"] === "POST"){
+        #Wenn Text hinzugefügt wurde
+        if(!empty($_POST["lecture_text"])){
+            $text = $_POST["lecture_text"];
+        }
+        if(isset($_FILES["slide_file"]) && $_FILES["slide_file"]["error"] === 0){
+            $uploadDir = "../uploads/";
+            $fileName = basename($_FILES["slide_file"]["name"]);
+            $targetPath = $uploadDir.$filename;
+
+            move_uploaded_file($_FILES["slide_file"]["tmp_name"],$targetPath);
+            echo "<p>File uploaded succesfully.</p>";
+        }
+
+    }
 ?>
 
 <h2>Upload Lecture Slides</h2>
