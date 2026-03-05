@@ -6,6 +6,7 @@
         if(!empty($_POST["lecture_text"])){
             $text = $_POST["lecture_text"];
         }
+        #Wenn PDF hochgeladen wurde
         if(isset($_FILES["slide_file"]) && $_FILES["slide_file"]["error"] === 0){
             $uploadDir = "../uploads/";
             $fileName = basename($_FILES["slide_file"]["name"]);
