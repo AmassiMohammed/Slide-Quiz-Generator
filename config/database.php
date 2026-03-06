@@ -2,7 +2,7 @@
 return[
     'host'  => 'localhost',
     'dbname'  => 'quizgen_db',
-    'user'  => 'Mohammed Amassi',
-    'password' => 'Mohammed2345',
+    'user'  => 'root',
+    'password' => '',
     'charset'  => 'utf8mb4',
 ];
