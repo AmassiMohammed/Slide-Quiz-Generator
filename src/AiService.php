@@ -4,8 +4,8 @@ namespace QuizGen;
 
 class AiService
 {
-    private const API_URL = 'https://api.anthropic.com/v1/messages';
-    private const MODEL   = 'claude-sonnet-4-20250514';
+    // Google Gemini – KOSTENLOS!
+    private const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
     private const TIMEOUT = 90;
 
     private string $apiKey;
@@ -16,21 +16,29 @@ class AiService
     }
 
     /**
-     * Sendet einen Prompt an Claude und gibt den Text zurück.
+     * Sendet einen Prompt an Gemini und gibt den Text zurück.
      *
      * @throws \RuntimeException Bei API-Fehler
      */
     public function complete(string $prompt, int $maxTokens = 4096): string
     {
+        $url = self::API_URL . '?key=' . urlencode($this->apiKey);
+
         $payload = json_encode([
-            'model'      => self::MODEL,
-            'max_tokens' => $maxTokens,
-            'messages'   => [
-                ['role' => 'user', 'content' => $prompt]
+            'contents' => [
+                [
+                    'parts' => [
+                        ['text' => $prompt]
+                    ]
+                ]
             ],
+            'generationConfig' => [
+                'maxOutputTokens' => $maxTokens,
+                'temperature'     => 0.7,
+            ]
         ]);
 
-        $ch = curl_init(self::API_URL);
+        $ch = curl_init($url);
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST           => true,
@@ -38,8 +46,6 @@ class AiService
             CURLOPT_TIMEOUT        => self::TIMEOUT,
             CURLOPT_HTTPHEADER     => [
                 'Content-Type: application/json',
-                'x-api-key: ' . $this->apiKey,
-                'anthropic-version: 2023-06-01',
             ],
         ]);
 
@@ -59,6 +65,8 @@ class AiService
         }
 
         $data = json_decode($response, true);
-        return $data['content'][0]['text'] ?? '';
+
+        // Gemini Response-Format
+        return $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
     }
 }
