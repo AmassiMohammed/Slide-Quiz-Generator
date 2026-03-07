@@ -8,6 +8,7 @@ unset($_SESSION['error']);
 require_once __DIR__ . '/../templates/header.php';
 ?>
 
+
 <div class="container">
 
   <!-- HERO -->
