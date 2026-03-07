@@ -4,9 +4,10 @@ namespace QuizGen;
 
 class AiService
 {
-    // Google Gemini – KOSTENLOS!
-    private const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
-    private const TIMEOUT = 90;
+    // Groq – Kostenlos & sehr schnell!
+    private const API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+    private const MODEL   = 'llama-3.1-8b-instant'; // Kostenlos
+    private const TIMEOUT = 60;
 
     private string $apiKey;
 
@@ -16,29 +17,29 @@ class AiService
     }
 
     /**
-     * Sendet einen Prompt an Gemini und gibt den Text zurück.
+     * Sendet einen Prompt an Groq und gibt den Text zurück.
      *
      * @throws \RuntimeException Bei API-Fehler
      */
     public function complete(string $prompt, int $maxTokens = 4096): string
     {
-        $url = self::API_URL . '?key=' . urlencode($this->apiKey);
-
         $payload = json_encode([
-            'contents' => [
+            'model'       => self::MODEL,
+            'max_tokens'  => $maxTokens,
+            'temperature' => 0.7,
+            'messages'    => [
                 [
-                    'parts' => [
-                        ['text' => $prompt]
-                    ]
+                    'role'    => 'system',
+                    'content' => 'Du bist ein professioneller Lerncoach. Antworte immer nur mit validem JSON, ohne Markdown-Backticks oder zusätzlichen Text.'
+                ],
+                [
+                    'role'    => 'user',
+                    'content' => $prompt
                 ]
             ],
-            'generationConfig' => [
-                'maxOutputTokens' => $maxTokens,
-                'temperature'     => 0.7,
-            ]
         ]);
 
-        $ch = curl_init($url);
+        $ch = curl_init(self::API_URL);
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST           => true,
@@ -46,6 +47,7 @@ class AiService
             CURLOPT_TIMEOUT        => self::TIMEOUT,
             CURLOPT_HTTPHEADER     => [
                 'Content-Type: application/json',
+                'Authorization: Bearer ' . $this->apiKey,
             ],
         ]);
 
@@ -66,7 +68,7 @@ class AiService
 
         $data = json_decode($response, true);
 
-        // Gemini Response-Format
-        return $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
+        // Groq verwendet OpenAI-Format
+        return $data['choices'][0]['message']['content'] ?? '';
     }
 }
