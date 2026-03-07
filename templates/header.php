@@ -23,6 +23,5 @@ $baseUrl  = rtrim($basePath, '/\\');
   <a class="nav-logo" href="<?= $baseUrl ?>/public/index.php">Quiz<span>Gen</span></a>
   <ul class="nav-links">
     <li><a href="<?= $baseUrl ?>/public/index.php" <?= basename($_SERVER['PHP_SELF']) === 'index.php'  ? 'class="active"' : '' ?>>Neu</a></li>
-    <li><a href="<?= $baseUrl ?>/public/quiz.php"  <?= basename($_SERVER['PHP_SELF']) === 'quiz.php'   ? 'class="active"' : '' ?>>Quiz</a></li>
   </ul>
 </nav>
