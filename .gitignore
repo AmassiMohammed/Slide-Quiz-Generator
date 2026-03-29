@@ -1,4 +1,9 @@
 /vendor/
 /uploads/
 .env
+<<<<<<< HEAD
 *.log
+=======
+*.log
+.env
+>>>>>>> 7f8f1c33dbed2223e54562a0225bba897bf7014e
