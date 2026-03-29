@@ -1,22 +1,4 @@
 <?php
-<<<<<<< HEAD
-    require_once '../templates/header.php';
-?>
-
-<h2>Turn your lecture Slides into quizzes</h2>
-
-<p>
-    Upload your lecture slides and automatically generate quiz questions to help you study faster.
-</p>
-
-<a href="/upload.php">
-    <button>Upload Slides</button>
-</a>
-
-<?php
-    require_once '../templates/footer.php';
-?>
-=======
 session_start();
 
 $pageTitle = 'Startseite';
@@ -180,5 +162,4 @@ document.getElementById('mainForm').addEventListener('submit', function(e) {
 </script>
 
 <?php require_once __DIR__ . '/../templates/footer.php'; ?>
->>>>>>> 7f8f1c33dbed2223e54562a0225bba897bf7014e
 
